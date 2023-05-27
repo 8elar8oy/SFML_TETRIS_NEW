@@ -1,45 +1,51 @@
-п»ї#pragma once
+#pragma once
 #include "SFML/Graphics.hpp"
+#include <time.h>
 using namespace sf;
-
+struct Point
+{
+	int x, y;
+} pos[4], fpos[4];
 class Tetramino {
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
-	int pos_x[4];
-	int pos_y[4];
+	
 	int color;
 	int speed_x = 0;
 	int n = 3;
 	bool rotate = 0;
-	Clock clock;
-	float timer = 0, delay = 0.5;
-	float time1;
-public:
+	Clock clock,clock2;
+	float timer, delay = 0.5;
+	float timer2;
 	
+	int score = 0;
+public:
+
 	Tetramino() {
 		srand(time(nullptr));
-		
-
-		
 		texture.loadFromFile("TETRISSFML.png");
 		sprite.setTexture(texture);
-		color = rand() % 7;
-		 // Р·Р°РґР°РµРј С‚РёРї С‚РµС‚СЂР°РјРёРЅРѕ
-		for (int i = 0; i < 4; i++)
-		{
-			pos_x[i] = figures[n][i] % 2;
-			pos_y[i] = figures[n][i] / 2;
-			
+		color = 1+ rand() % 7;
+		// задаем тип тетрамино
+		if (pos[0].x == 0) { //если только появился(начальная позиция кусочка фигуры)
+			for (int i = 0; i < 4; i++) //проверяем каждый кусочек фигуры
+			{
+				pos[i].x = figures[n][i] % 2; //устанавливаем позицию 
+				pos[i].y = figures[n][i] / 2;
+
+			}
+			clock.restart();
+			clock2.restart();
 		}
 		
 	}
 
 
 	void update() {
-		float time1 = clock.getElapsedTime().asSeconds();
-		clock.restart();
-		timer += time1;
+		
+		timer = clock.getElapsedTime().asSeconds();
+		timer2 = clock2.getElapsedTime().asSeconds();
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
 			speed_x = -1;
 		}
@@ -49,40 +55,114 @@ public:
 		if (Keyboard::isKeyPressed(Keyboard::Up)) {
 			rotate = true;
 		}
-		for (int i = 0; i < 4; i++) pos_x[i] += speed_x;
-		if (rotate) {
-			int center_x = pos_x[1];
-			int center_y = pos_y[1];
-			for (int i = 0; i < 4; i++)
-			{
-				int x = pos_y[i] - center_y; // y - y0
-				int y = pos_x[i] - center_x; // x - x0
-				pos_x[i] = center_x - x;
-				pos_y[i] = center_y + y;
-			}
-		
+		if (Keyboard::isKeyPressed(Keyboard::Down)) {
+			delay = 0.05;
 		}
-		if (timer > delay ) {
+		for (int i = 0; i < 4; i++) {
+			fpos[i] = pos[i];
+			pos[i].x += speed_x;
+		}
+		if (outOfBorders()) {
 			for (int i = 0; i < 4; i++)
 			{
-				pos_y[i] += 1;
+				pos[i] = fpos[i];
+				
+			}
+		}
+		if (rotate) {
+			if (timer2 > 0.2) {
+				int center_x = pos[1].x;
+				int center_y = pos[1].y;
+				for (int i = 0; i < 4; i++)
+				{
+					int x = pos[i].y - center_y; // y - y0
+					int y = pos[i].x - center_x; // x - x0
+					pos[i].x = center_x - x;
+					pos[i].y = center_y + y;
+				}
+				if (outOfBorders()) {
+					for (int i = 0; i < 4; i++)
+					{
+						pos[i] = fpos[i];
+					}
+				}
+				clock2.restart();
+			}
+				
+		}
+		if (timer > delay) {
+			
+			for (int i = 0; i < 4; i++)
+			{
+				fpos[i] = pos[i];
+				
+				pos[i].y += 1;
 
 			}
-			timer = 0;
+			if (outOfBorders()) {
+				for (int i = 0; i < 4; i++) {
+					pos[i] = fpos[i];
+					field[pos[i].y][pos[i].x] = color;
+				}
+				color = 1+ rand() % 7;
+				int n = rand() % 7;
+				for (int i = 0; i < 4; i++)
+				{
+					pos[i].x = figures[n][i] % 2;
+					pos[i].y = figures[n][i] / 2;
+				}
+			
+			}
+			clock.restart();
+			
+		}
+		int k = M - 1;
+		for (int i = M - 1; i > 0; i--)
+		{
+			int count = 0;
+			for (int j = 0; j < N; j++)
+			{
+				if (field[i][j]) count++;
+				field[k][j] = field[i][j];
+			}
+			if (count < N) k--;
+			if (count == N) score++;
 		}
 		speed_x = 0;
 		rotate = 0;
+		delay = 0.5;
 	}
-	
+
 
 	void draw(sf::RenderWindow& window) {
+		for (int i = 0; i < M; i++)
+			for (int j = 0; j < N; j++)
+			{
+				if (field[i][j] == 0) continue;
+				sprite.setTextureRect(IntRect(field[i][j] * 36, 0, 36, 36));
+				sprite.setPosition(j * 36, i * 36);
+				window.draw(sprite);
+			}
 		for (int i = 0; i < 4; i++)
 		{
-			sprite.setPosition(pos_x[i] * 36, pos_y[i] * 36);
-			sprite.setTextureRect(IntRect(0+36*color, 0, 36, 36));
+			// Разукрашиваем тетрамино
+			sprite.setTextureRect(IntRect(color * 36, 0, 36, 36));
+			// Устанавливаем позицию каждого кусочка тетрамино
+			sprite.setPosition(pos[i].x * 36, pos[i].y * 36);
+			// Отрисовка спрайта
 			window.draw(sprite);
 		}
 	}
-
+	bool outOfBorders()
+	{
+		for (int i = 0; i < 4; i++) {
+			if (pos[i].x < 0 || pos[i].x >= N || pos[i].y >= M) return true;
+			else if (field[pos[i].y][pos[i].x]) return true;
+		}
+		return false;
+	}
+	int getScore() {
+		return score;
+	}
 
 };

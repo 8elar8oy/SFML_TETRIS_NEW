@@ -1,13 +1,13 @@
-п»ї#pragma once
+#pragma once
 #include "SFML/Graphics.hpp"
 const size_t WINDOW_HEIGHT = 720;
-const size_t WINDOW_WIDTH = 360;
+const size_t WINDOW_WIDTH = 460;
 const std::string WINDOW_TITLE = "SFML_TETRIS";
 const size_t FPS = 15;
-const int M = 20; // РІС‹СЃРѕС‚Р° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
-const int N = 10; // С€РёСЂРёРЅР° РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
-int field[M][N] = { 0 }; // РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
-// РњР°СЃСЃРёРІ С„РёРіСѓСЂРѕРє-С‚РµС‚СЂР°РјРёРЅРѕ
+const int M = 20; // высота игрового поля
+const int N = 10; // ширина игрового поля
+int field[M][N] = { 0 }; // игровое поле
+// Массив фигурок-тетрамино
 int figures[7][4] =
 {
 	1,3,5,7, // I
