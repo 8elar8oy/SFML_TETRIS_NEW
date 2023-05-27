@@ -11,15 +11,14 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 	
-	int color;
-	int speed_x = 0;
-	int n = 3;
-	bool rotate = 0;
-	Clock clock,clock2;
-	float timer, delay = 0.5;
-	float timer2;
-	
-	int score = 0;
+	int color; // цвет фигурки
+	int speed_x = 0; // скорость перемещения фигурки по X
+	int n;// тип фигурки
+	bool rotate = 0; // функция вращения
+	Clock clock,clock2; // создание таймеров
+	float timer,timer2; // создание счетчиков таймеров
+	float delay = 0.5; // промежуток времени падения
+	int score = 0; // счет игрока
 public:
 
 	Tetramino() {
@@ -27,16 +26,17 @@ public:
 		texture.loadFromFile("TETRISSFML.png");
 		sprite.setTexture(texture);
 		color = 1+ rand() % 7;
+		n = rand() % 7;
 		// задаем тип тетрамино
 		if (pos[0].x == 0) { //если только появился(начальная позиция кусочка фигуры)
 			for (int i = 0; i < 4; i++) //проверяем каждый кусочек фигуры
 			{
-				pos[i].x = figures[n][i] % 2; //устанавливаем позицию 
-				pos[i].y = figures[n][i] / 2;
+				pos[i].x = figures[n][i] % 2; //устанавливаем позицию каждого кусочка фигурки на поле по x
+				pos[i].y = figures[n][i] / 2; //устанавливаем позицию каждого кусочка фигурки на поле по x
 
 			}
-			clock.restart();
-			clock2.restart();
+			clock.restart(); // перезапускаем таймер отвечаюций за промежуток времени падения
+			clock2.restart();  // перезапускаем таймер отвечаюций за промежуток времени вращения
 		}
 		
 	}
