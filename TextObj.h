@@ -11,8 +11,8 @@ public:
 		font.loadFromFile("Font.ttf");
 		text.setString(str);
 		text.setFont(font);
-		text.setCharacterSize(50);
-		text.setPosition(pos);
+		text.setCharacterSize(40);
+		text.setPosition(pos)
 
 	}
 	void update(std::string str) {
