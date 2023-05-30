@@ -14,7 +14,7 @@ private:
 	Sprite score_sprite;
 	TextObj score_text;
 	TextObj gameover_text;
-	FloatRect text_size = gameover_text.getText().getGlobalBounds();
+	
 	bool gameIsOver = false;
 	void checkEvents() {
 		sf::Event event;
@@ -29,18 +29,13 @@ private:
 		{
 			if (field[1][i]) {
 				gameIsOver = true;
-				//break;
-				
-				//window.close();
 			}
-
 		}
-		
 	}
 
 	void draw() {
 	
-		window.clear(Color::White);
+		window.clear();
 		window.draw(background_sprite);
 		window.draw(score_sprite);
 		window.draw(score_text.getText());
@@ -53,12 +48,12 @@ private:
 		window.display();
 	}
 public:
-	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore())),gameover_text("GAME OVER")
+	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore()),Vector2f{ 360,40 }), gameover_text("GAME OVER",Vector2f((WINDOW_WIDTH - gameover_text.getZize().width)/2, (WINDOW_HEIGHT - gameover_text.getZize().height)/2 ))
 	{
-		gameover_text.getText().setPosition(Vector2f((WINDOW_WIDTH - text_size.width) / 2, (WINDOW_HEIGHT - text_size.height) / 2));
-		score_text.getText().setPosition(Vector2f{ 360,40 });
+		
 		background.loadFromFile("WINDOW.png");
 		background_sprite.setTexture(background);
+		
 		scorebg.loadFromFile("SCORE.png");
 		score_sprite.setTexture(scorebg);
 		score_sprite.setPosition(360, 0);
@@ -71,13 +66,9 @@ public:
 		{
 			checkEvents();
 			while (!gameIsOver) {
-				
 				update();
 				draw();
-			
 			}
-				
-			
 			gameover();
 			
 		}

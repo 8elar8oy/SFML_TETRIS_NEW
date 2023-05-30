@@ -6,13 +6,14 @@ class TextObj {
 private:
 	sf::Font font;
 	sf::Text text;
+	sf::FloatRect size = text.getGlobalBounds();
 public:
-	TextObj(std::string str, sf::Vector2f pos) {
+	TextObj(std::string str,sf::Vector2f pos) {
 		font.loadFromFile("Font.ttf");
 		text.setString(str);
 		text.setFont(font);
 		text.setCharacterSize(40);
-		text.setPosition(pos)
+		text.setPosition(pos);
 
 	}
 	void update(std::string str) {
@@ -20,5 +21,6 @@ public:
 	}
 
 	sf::Text getText() { return text; }
+	sf::FloatRect getZize() { return size; }
 
 };
