@@ -9,11 +9,15 @@ private:
 	RenderWindow window;
 	Tetramino tetramino;
 	Texture background;
+	Texture background1;
 	Sprite background_sprite;
 	Texture scorebg;
 	Sprite score_sprite;
 	TextObj score_text;
-	TextObj gameover_text;
+	Sprite gameover_sprite;
+	Texture gameover_texture;
+	Sprite start_sprite;
+	Texture start_texture;
 	
 	bool gameIsOver = false;
 	void checkEvents() {
@@ -31,6 +35,10 @@ private:
 				gameIsOver = true;
 			}
 		}
+		if (tetramino.getScore() == 1) {
+			background_sprite.setTexture(background1);
+
+		}
 	}
 
 	void draw() {
@@ -43,34 +51,57 @@ private:
 		window.display();
 	}
 	void gameover() {
-		window.clear(Color::Black);
-		window.draw(gameover_text.getText());
+		window.draw(gameover_sprite);
 		window.display();
+		
+	}
+	void start() {
+		window.draw(start_sprite);
+		window.display();
+	
 	}
 public:
-	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore()),Vector2f{ 360,40 }), gameover_text("GAME OVER",Vector2f((WINDOW_WIDTH - gameover_text.getZize().width)/2, (WINDOW_HEIGHT - gameover_text.getZize().height)/2 ))
+	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore()),Vector2f{ 360,40 })
 	{
+		start_texture.loadFromFile("START.png");
+		start_sprite.setTexture(start_texture);
 		
 		background.loadFromFile("WINDOW.png");
+		background1.loadFromFile("WINDOW2.png");
 		background_sprite.setTexture(background);
 		
 		scorebg.loadFromFile("SCORE.png");
 		score_sprite.setTexture(scorebg);
 		score_sprite.setPosition(360, 0);
+		
+		gameover_texture.loadFromFile("GAMEOVER.png");
+		gameover_sprite.setTexture(gameover_texture);
+		
 		window.setFramerateLimit(FPS);
 		
 	}
 
 	void play() {
-		while (window.isOpen() )
+		while (window.isOpen())
 		{
-			checkEvents();
-			while (!gameIsOver) {
-				update();
-				draw();
-			}
-			gameover();
-			
+				while (!sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+					start();
+				}
+				checkEvents();
+				while (!gameIsOver) {
+					
+					update();
+					draw();
+				}
+				while (gameIsOver) {
+					gameover();
+					if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+						break;
+					}
+				}
+				if (gameIsOver) {
+					break;
+				}
 		}
 	}
 };

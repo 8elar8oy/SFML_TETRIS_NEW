@@ -10,6 +10,7 @@ class Tetramino {
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
+	sf::Texture texture1;
 
 	int color; // ���� �������
 	int speed_x = 0; // �������� ����������� ������� �� X
@@ -26,6 +27,7 @@ public:
 	Tetramino() {
 		srand(time(nullptr));
 		texture.loadFromFile("TETRISSFML.png");
+		texture1.loadFromFile("TETRISSFML2.png");
 		sprite.setTexture(texture);
 		color = 1 + rand() % 7;
 		n = rand() % 7;
@@ -118,7 +120,10 @@ public:
 			clock.restart();
 
 		}	
-		
+		if (score == 1) {
+			sprite.setTexture(texture1);
+			
+		}
 		
 		
 		int k = M - 1;
@@ -169,6 +174,13 @@ public:
 	
 	int getScore() {
 		return score;
+	}
+	Sprite getSprite() {
+		return sprite;
+	}
+	Texture getTexture() {
+		return texture1;
+	
 	}
 	
 
