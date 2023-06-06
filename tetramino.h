@@ -22,8 +22,8 @@ private://доступно только внутри класса
 public://доступно везде
 	Tetramino() {//конструктор фигуры тетриса
 		srand(time(nullptr));//функция генерации случайных чисел
-		texture.loadFromFile("TETRISSFML.png");//загурзка текстуры из файла
-		texture1.loadFromFile("TETRISSFML2.png");//загрузка темной текстуры из файла
+		texture.loadFromFile(TEXTURE_TETRAMINO);//загурзка текстуры из файла
+		texture1.loadFromFile(TEXTURE_TETRAMINO2);//загрузка темной текстуры из файла
 		sprite.setTexture(texture);//установка текстуры в спрайт
 		setType();
 		clock.restart(); //перезапуск первых часов
@@ -54,7 +54,7 @@ public://доступно везде
 					pos[i] = fpos[i];//сохранение предыдущей позиции блока
 					field[pos[i].y][pos[i].x] = color;//присваивание цвета ячейке двумерного массива
 				}
-				setType();
+				setType();//установка позиции и цвета по форме фигуры
 			}
 			clock.restart();//перезапуск первых часов
 
@@ -63,7 +63,7 @@ public://доступно везде
 			sprite.setTexture(texture1);//ночной режим игры
 
 		}
-		deleteLine();
+		deleteLine();//стирание линии
 		speed_x = 0;//скорость равна нулю
 		isRotate = 0;// поворот равен false
 		delay = 0.5;//задержка падения начальная
@@ -72,7 +72,7 @@ public://доступно везде
 		texture = texture1;
 	}
 	void deleteLine() {
-	//стирание линии
+		//стирание линии
 		int k = M - 1;//коэффицент k = последняя строка
 		for (int i = M - 1; i > 0; i--)//проверка с конца поля
 		{
@@ -129,7 +129,7 @@ public://доступно везде
 			pos[i].y = figures[n][i] / 2; //установка позиции кубика фигуры из локальной в глобальную по y
 
 		}
-	
+
 	}
 	void returnPos() {
 		if (outOfBorders()) {//проверка выхода за границы

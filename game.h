@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "settings.h"
 #include "SFML/Graphics.hpp"
 #include "tetramino.h"
@@ -7,21 +7,21 @@ using namespace sf;
 class Game {
 private:
 	RenderWindow window;
-	
+
 	Tetramino tetramino;
-	
+
 	Texture background;
 	Texture background1;
 	Sprite background_sprite;
 
 	TextObj score_text;
-	
+
 	Sprite gameover_sprite;
 	Texture gameover_texture;
-	
+
 	Sprite start_sprite;
 	Texture start_texture;
-
+	std::string score = std::to_string(tetramino.getScore());
 	bool gameIsOver = false;
 	void checkEvents() {
 		sf::Event event;
@@ -38,7 +38,7 @@ private:
 			}
 		}
 		darkMode();
-		
+
 	}
 	void draw() {
 		window.clear();
@@ -64,16 +64,16 @@ private:
 		}
 	}
 public:
-	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore()), Vector2f{ 360,40 })
+	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(score, Vector2f{ 360,40 })
 	{
-		start_texture.loadFromFile("START.png");
+		start_texture.loadFromFile(TEXTURE_START);
 		start_sprite.setTexture(start_texture);
 
-		background.loadFromFile("WINDOW.png");
-		background1.loadFromFile("WINDOW2.png");
+		background.loadFromFile(TEXTURE_WINDOW);
+		background1.loadFromFile(TEXTURE_WINDOW2);
 		background_sprite.setTexture(background);
 
-		gameover_texture.loadFromFile("GAMEOVER.png");
+		gameover_texture.loadFromFile(TEXTURE_GAMEOVER);
 		gameover_sprite.setTexture(gameover_texture);
 
 		window.setFramerateLimit(FPS);
