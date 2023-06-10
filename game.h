@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "settings.h"
 #include "SFML/Graphics.hpp"
 #include "tetramino.h"
@@ -21,7 +21,7 @@ private:
 
 	Sprite start_sprite;
 	Texture start_texture;
-	std::string score = std::to_string(tetramino.getScore());
+	int l = 1;
 	bool gameIsOver = false;
 	void checkEvents() {
 		sf::Event event;
@@ -37,8 +37,7 @@ private:
 				gameIsOver = true;
 			}
 		}
-		darkMode();
-
+		deleteLine();
 	}
 	void draw() {
 		window.clear();
@@ -58,19 +57,49 @@ private:
 
 	}
 	void darkMode() {
-		if (tetramino.getScore() >= 1) {
-			background_sprite.setTexture(background1);
-			tetramino.changeTexture();
+
+		if (tetramino.getScore()%4 == 0 ) {
+			l++;
+			if (l % 2 != 0) {
+				background_sprite.setTexture(background);
+				tetramino.changeTexture1();
+			}
+			else if (l % 2 == 0) {
+				background_sprite.setTexture(background1);
+				tetramino.changeTexture();
+			}
+			
+			
+			
+		}
+	}
+	void deleteLine() {
+		//стирание линии
+		int k = M - 1;//коэффицент k = последняя строка
+		for (int i = M - 1; i > 0; i--)//проверка с конца поля
+		{
+			int count = 0;//счет закрашенных кубов
+			for (int j = 0; j < N; j++)//проверка каждого блока в строке
+			{
+				if (field[i][j]) count++;//если элемент массива не 0
+				field[k][j] = field[i][j];//присваивание проверяемой строке текущей строки
+			}
+			if (count < N) k--;//если не вся линия закрашена, коэффицент = следущей строке
+			if (count == N) {
+				
+				tetramino.incScore();//если все закрашено, счет плюс 1
+				darkMode();
+			}
 		}
 	}
 public:
-	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(score, Vector2f{ 360,40 })
+	Game() :window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE), score_text(std::to_string(tetramino.getScore()), Vector2f{ 360,40 })
 	{
 		start_texture.loadFromFile(TEXTURE_START);
 		start_sprite.setTexture(start_texture);
 
 		background.loadFromFile(TEXTURE_WINDOW);
-		background1.loadFromFile(TEXTURE_WINDOW2);
+		background1.loadFromFile(TEXTURE_WINDOW2 );
 		background_sprite.setTexture(background);
 
 		gameover_texture.loadFromFile(TEXTURE_GAMEOVER);

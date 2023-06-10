@@ -22,8 +22,8 @@ private://доступно только внутри класса
 public://доступно везде
 	Tetramino() {//конструктор фигуры тетриса
 		srand(time(nullptr));//функция генерации случайных чисел
-		texture.loadFromFile(TEXTURE_TETRAMINO);//загурзка текстуры из файла
-		texture1.loadFromFile(TEXTURE_TETRAMINO2);//загрузка темной текстуры из файла
+		texture.loadFromFile("TETRISSFML.png");//загурзка текстуры из файла
+		texture1.loadFromFile("TETRISSFML2.png");//загрузка темной текстуры из файла
 		sprite.setTexture(texture);//установка текстуры в спрайт
 		setType();
 		clock.restart(); //перезапуск первых часов
@@ -59,33 +59,19 @@ public://доступно везде
 			clock.restart();//перезапуск первых часов
 
 		}
-		if (score >= 10) {//провера счета
-			sprite.setTexture(texture1);//ночной режим игры
-
-		}
-		deleteLine();//стирание линии
+		
+		
 		speed_x = 0;//скорость равна нулю
 		isRotate = 0;// поворот равен false
 		delay = 0.5;//задержка падения начальная
 	}
 	void changeTexture() {
-		texture = texture1;
+		sprite.setTexture(texture1);
 	}
-	void deleteLine() {
-		//стирание линии
-		int k = M - 1;//коэффицент k = последняя строка
-		for (int i = M - 1; i > 0; i--)//проверка с конца поля
-		{
-			int count = 0;//счет закрашенных кубов
-			for (int j = 0; j < N; j++)//проверка каждого блока в строке
-			{
-				if (field[i][j]) count++;//если элемент массива не 0
-				field[k][j] = field[i][j];//присваивание проверяемой строке текущей строки
-			}
-			if (count < N) k--;//если не вся линия закрашена, коэффицент = следущей строке
-			if (count == N) score++;//если все закрашено, счет плюс 1
-		}
+	void changeTexture1() {
+		sprite.setTexture(texture);
 	}
+	
 	void rotate() {
 		if (isRotate) {//поворот фигуры
 			if (timer2 > 0.2) {//задержка поворота 
@@ -166,6 +152,9 @@ public://доступно везде
 	}
 	int getScore() {//геттер счета
 		return score;
+	}
+	void incScore() {
+		score++;
 	}
 	Sprite getSprite() {// геттер спрайта
 		return sprite;
