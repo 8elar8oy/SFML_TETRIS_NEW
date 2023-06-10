@@ -49,28 +49,22 @@ private:
 	void gameover() {
 		window.draw(gameover_sprite);
 		window.display();
-
 	}
 	void start() {
 		window.draw(start_sprite);
 		window.display();
-
 	}
 	void darkMode() {
-
 		if (tetramino.getScore()%4 == 0 ) {
 			l++;
 			if (l % 2 != 0) {
 				background_sprite.setTexture(background);
-				tetramino.changeTexture1();
+				tetramino.returnTexture();
 			}
 			else if (l % 2 == 0) {
 				background_sprite.setTexture(background1);
 				tetramino.changeTexture();
 			}
-			
-			
-			
 		}
 	}
 	void deleteLine() {
@@ -106,7 +100,6 @@ public:
 		gameover_sprite.setTexture(gameover_texture);
 
 		window.setFramerateLimit(FPS);
-
 	}
 
 	void play() {
@@ -117,7 +110,6 @@ public:
 			}
 			checkEvents();
 			while (!gameIsOver) {
-
 				update();
 				draw();
 			}

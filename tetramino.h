@@ -65,10 +65,10 @@ public://доступно везде
 		isRotate = 0;// поворот равен false
 		delay = 0.5;//задержка падения начальная
 	}
-	void changeTexture() {
+	void changeTexture() {//функция смены цвета на темный
 		sprite.setTexture(texture1);
 	}
-	void changeTexture1() {
+	void returnTexture() {//функция возврата цвета
 		sprite.setTexture(texture);
 	}
 	
@@ -85,7 +85,7 @@ public://доступно везде
 					pos[i].x = center_x - x;
 					pos[i].y = center_y + y;
 				}
-				returnPos();
+				returnPos();//функция возврата позиции
 				clock2.restart();//презапуск вторых часов
 			}
 
@@ -108,7 +108,7 @@ public://доступно везде
 	}
 	void setType() {
 		color = 1 + rand() % 7;//случайный цвет новой фигуры
-		int n = rand() % 7;//случайный тип новой фигуры
+		n = rand() %7;//случайный тип новой фигуры
 		for (int i = 0; i < 4; i++) //цикл for 4 итерации(фигура из 4 блоков)
 		{
 			pos[i].x = figures[n][i] % 2; //установка позиции кубика фигуры из локальной в глобальную по x
@@ -153,7 +153,7 @@ public://доступно везде
 	int getScore() {//геттер счета
 		return score;
 	}
-	void incScore() {
+	void incScore() {//увеличение счета
 		score++;
 	}
 	Sprite getSprite() {// геттер спрайта
