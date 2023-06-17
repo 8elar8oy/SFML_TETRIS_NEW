@@ -10,10 +10,10 @@ class Tetramino {//класс фигур тетриса
 private://доступно только внутри класса
 	sf::Sprite sprite;//спрайт
 	sf::Texture texture;//текстура
-	sf::Texture texture1;//темная текстура
+	sf::Texture texture2;//темная текстура
 	int color; //цвет фигуры
 	int speed_x = 0; //скорость движения
-	int n;//тип фигуры
+	int type;//тип фигуры
 	bool isRotate = 0; //логическая функция поврота фигуры
 	Clock clock, clock2; //создание часов
 	float timer, timer2; //создание таймеров для счета времени
@@ -23,7 +23,7 @@ public://доступно везде
 	Tetramino() {//конструктор фигуры тетриса
 		srand(time(nullptr));//функция генерации случайных чисел
 		texture.loadFromFile("TETRISSFML.png");//загурзка текстуры из файла
-		texture1.loadFromFile("TETRISSFML2.png");//загрузка темной текстуры из файла
+		texture2.loadFromFile("TETRISSFML2.png");//загрузка темной текстуры из файла
 		sprite.setTexture(texture);//установка текстуры в спрайт
 		setType();
 		clock.restart(); //перезапуск первых часов
@@ -65,10 +65,10 @@ public://доступно везде
 		isRotate = 0;// поворот равен false
 		delay = 0.5;//задержка падения начальная
 	}
-	void changeTexture() {//функция смены цвета на темный
-		sprite.setTexture(texture1);
+	void changeTexture() {
+		sprite.setTexture(texture2);
 	}
-	void returnTexture() {//функция возврата цвета
+	void oldTexture() {
 		sprite.setTexture(texture);
 	}
 	
@@ -85,7 +85,7 @@ public://доступно везде
 					pos[i].x = center_x - x;
 					pos[i].y = center_y + y;
 				}
-				returnPos();//функция возврата позиции
+				returnPos();
 				clock2.restart();//презапуск вторых часов
 			}
 
@@ -108,11 +108,11 @@ public://доступно везде
 	}
 	void setType() {
 		color = 1 + rand() % 7;//случайный цвет новой фигуры
-		n = rand() %7;//случайный тип новой фигуры
+		type = rand() % 7;//случайный тип новой фигуры
 		for (int i = 0; i < 4; i++) //цикл for 4 итерации(фигура из 4 блоков)
 		{
-			pos[i].x = figures[n][i] % 2; //установка позиции кубика фигуры из локальной в глобальную по x
-			pos[i].y = figures[n][i] / 2; //установка позиции кубика фигуры из локальной в глобальную по y
+			pos[i].x = figures[type][i] % 2; //установка позиции кубика фигуры из локальной в глобальную по x
+			pos[i].y = figures[type][i] / 2; //установка позиции кубика фигуры из локальной в глобальную по y
 
 		}
 
@@ -153,14 +153,14 @@ public://доступно везде
 	int getScore() {//геттер счета
 		return score;
 	}
-	void incScore() {//увеличение счета
+	void incScore() {
 		score++;
 	}
 	Sprite getSprite() {// геттер спрайта
 		return sprite;
 	}
 	Texture getTexture() {//геттер текстуры
-		return texture1;
+		return texture2;
 
 	}
 };

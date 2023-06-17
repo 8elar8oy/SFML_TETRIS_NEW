@@ -11,7 +11,7 @@ private:
 	Tetramino tetramino;
 
 	Texture background;
-	Texture background1;
+	Texture background2;
 	Sprite background_sprite;
 
 	TextObj score_text;
@@ -21,7 +21,7 @@ private:
 
 	Sprite start_sprite;
 	Texture start_texture;
-	int l = 1;
+	int colorScore = 1;
 	bool gameIsOver = false;
 	void checkEvents() {
 		sf::Event event;
@@ -55,14 +55,15 @@ private:
 		window.display();
 	}
 	void darkMode() {
+
 		if (tetramino.getScore()%4 == 0 ) {
-			l++;
-			if (l % 2 != 0) {
+			colorScore++;
+			if (colorScore % 2 != 0) {
 				background_sprite.setTexture(background);
-				tetramino.returnTexture();
+				tetramino.oldTexture();
 			}
-			else if (l % 2 == 0) {
-				background_sprite.setTexture(background1);
+			else if (colorScore % 2 == 0) {
+				background_sprite.setTexture(background2);
 				tetramino.changeTexture();
 			}
 		}
@@ -93,13 +94,14 @@ public:
 		start_sprite.setTexture(start_texture);
 
 		background.loadFromFile(TEXTURE_WINDOW);
-		background1.loadFromFile(TEXTURE_WINDOW2 );
+		background2.loadFromFile(TEXTURE_WINDOW2 );
 		background_sprite.setTexture(background);
 
 		gameover_texture.loadFromFile(TEXTURE_GAMEOVER);
 		gameover_sprite.setTexture(gameover_texture);
 
 		window.setFramerateLimit(FPS);
+
 	}
 
 	void play() {
@@ -110,6 +112,7 @@ public:
 			}
 			checkEvents();
 			while (!gameIsOver) {
+
 				update();
 				draw();
 			}
