@@ -25,7 +25,7 @@ public://доступно везде
 		texture.loadFromFile("TETRISSFML.png");//загурзка текстуры из файла
 		texture2.loadFromFile("TETRISSFML2.png");//загрузка темной текстуры из файла
 		sprite.setTexture(texture);//установка текстуры в спрайт
-		setType();
+		setType();//установка типа фигуры(цвет, форма)
 		clock.restart(); //перезапуск первых часов
 		clock2.restart();  //перезапуск вторых часов
 	}
@@ -33,13 +33,13 @@ public://доступно везде
 
 		timer = clock.getElapsedTime().asSeconds();//присваивание первому таймеру времени часов в секунадх 
 		timer2 = clock2.getElapsedTime().asSeconds();//присваивание второму таймеру времени часов в секунадх 
-		checkButtons();
+		checkButtons();//функция проверки нажатия кнопок
 		for (int i = 0; i < 4; i++) {
 			fpos[i] = pos[i];//сохранение предыдущей позиции блока
 			pos[i].x += speed_x;//движение по x
 		}
-		returnPos();
-		rotate();
+		returnPos();//возвращение предыдущей позиции
+		rotate();//поворот фигуры
 
 		if (timer > delay) {//задерка движения вниз
 
@@ -59,20 +59,20 @@ public://доступно везде
 			clock.restart();//перезапуск первых часов
 
 		}
-		
-		
+
+
 		speed_x = 0;//скорость равна нулю
 		isRotate = 0;// поворот равен false
 		delay = 0.5;//задержка падения начальная
 	}
-	void changeTexture() {
+	void changeTexture() {//присваивание темной текстуры
 		sprite.setTexture(texture2);
 	}
-	void oldTexture() {
+	void oldTexture() {//возварщение старой текстуры
 		sprite.setTexture(texture);
 	}
-	
-	void rotate() {
+
+	void rotate() {//функция поворота фигуры 
 		if (isRotate) {//поворот фигуры
 			if (timer2 > 0.2) {//задержка поворота 
 				int center_x = pos[1].x;//центр фигуры по х
@@ -85,7 +85,7 @@ public://доступно везде
 					pos[i].x = center_x - x;
 					pos[i].y = center_y + y;
 				}
-				returnPos();
+				returnPos();//возвращение старой позиции
 				clock2.restart();//презапуск вторых часов
 			}
 
@@ -106,7 +106,7 @@ public://доступно везде
 			delay = 0.05;//ускорение падения
 		}
 	}
-	void setType() {
+	void setType() {//установка типа фигуры
 		color = 1 + rand() % 7;//случайный цвет новой фигуры
 		type = rand() % 7;//случайный тип новой фигуры
 		for (int i = 0; i < 4; i++) //цикл for 4 итерации(фигура из 4 блоков)
@@ -117,7 +117,7 @@ public://доступно везде
 		}
 
 	}
-	void returnPos() {
+	void returnPos() {//возвращение предыдущей позиции
 		if (outOfBorders()) {//проверка выхода за границы
 			for (int i = 0; i < 4; i++)
 			{
@@ -146,14 +146,14 @@ public://доступно везде
 	{
 		for (int i = 0; i < 4; i++) {//проверка каждого блока
 			if (pos[i].x < 0 || pos[i].x >= N || pos[i].y >= M) return true;//если выбло за груницы вернуть true
-			else if (field[pos[i].y][pos[i].x]) return true;//если элемент двумерного массива поля не равен нулю(пустой), тоже вернуть true
+			else if (field[pos[i].y][pos[i].x]) return true;//если элемент двумерного массива поля(клетка поля) не равен нулю(пустой), тоже вернуть true
 		}
 		return false;//иначе false
 	}
 	int getScore() {//геттер счета
 		return score;
 	}
-	void incScore() {
+	void incScore() {//увеличить счет
 		score++;
 	}
 	Sprite getSprite() {// геттер спрайта
@@ -161,6 +161,5 @@ public://доступно везде
 	}
 	Texture getTexture() {//геттер текстуры
 		return texture2;
-
 	}
 };
